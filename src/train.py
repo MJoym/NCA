@@ -60,13 +60,13 @@ def train(config):
     print(f"Using device: {device}")
 
     # load target image, pad it and repeat it batch_size times
-    target = load_image(config["target_path"], config["img_size"])
+    target = load_image(config["target3_path"], config["img_size"])
     target = pad_image(target, config["padding"])
     target = target.to(device)
     target_batch = target.repeat(config["batch_size"], 1, 1, 1)
 
     # Upload the skeleton of the retinotopic transform
-    # skeleton = load_skeleton(path=config["skeleton_path"], size=100)
+    skeleton = load_skeleton(path=config["skeleton3_path"], size=100)
 
     # initialize model and optimizer
     model = NCA(n_channels=config["n_channels"], filter=config["filter"], device=device)
@@ -74,7 +74,7 @@ def train(config):
 
     # initialize pool with seed cell state
     seed = make_seed(config["img_size"], config["n_channels"])
-    # seed[0, -1] = skeleton
+    seed[0, 4] = skeleton
     seed = pad_image(seed, config["padding"])
     seed = seed.to(device)
     pool = seed.clone().repeat(config["pool_size"], 1, 1, 1)
@@ -95,6 +95,7 @@ def train(config):
         # run model for random number of iterations 
         for i in range(np.random.randint(64, 96)):
             cs = model(cs)
+            cs[:, 4] = skeleton
 
         # calculate loss for each image in batch
         if config["loss"] == "L1":

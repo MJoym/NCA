@@ -5,13 +5,18 @@ from PIL import Image
 import matplotlib.pyplot as plt
 
 
-def load_image(path, size=100):
+def load_image(path, size=100, padding_sz=0, batch_sz=8, device=None):
     """
     Load an image and convert it to a tensor.
 
     Args:
+        padding_sz:
         path (str): path to image
+        device (str):
         size (int, optional): max size of image (defaults to 28)
+        padding_sz (int, optional):
+        batch_sz (int, optional):
+
 
     Returns:
         img (torch.Tensor): image of shape (1, 4, size, size) where the first three
@@ -33,10 +38,14 @@ def load_image(path, size=100):
         img = b
     else:
         img[..., :3] *= img[..., 3:]
-    plt.imshow(img)
-    plt.show()
+    # plt.imshow(img)
+    # plt.show()
     # convert to tensor and permute dimensions
     img = torch.from_numpy(img).permute(2, 0, 1).unsqueeze(0)
+
+    img = pad_image(img, padding_sz)
+    img = img.to(device)
+    img_batch1 = img.repeat(batch_sz, 1, 1, 1)
 
     return img
 
@@ -47,8 +56,8 @@ def load_skeleton(path, size=100):
     # convert to float and normalize
     img = np.float32(img) / 255.0
     img = torch.from_numpy(img)
-    plt.imshow(img)
-    plt.show()
+    # plt.imshow(img)
+    # plt.show()
     return img
 
 
@@ -111,7 +120,7 @@ def make_seed(size, n_channels=16):
         raise ValueError("n_channels must be greater than 4")
 
     x = torch.zeros((1, n_channels, size, size), dtype=torch.float32)
-    x[:, 3:, size // 2, size // 2] = 1.0
+    x[:, 4:, size // 2, size // 2] = 1.0 # Changed from 3: to 4: because my skeleton is in layer 4.
 
     return x
 

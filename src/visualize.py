@@ -29,6 +29,9 @@ if __name__ == "__main__":
     target_img = load_image(config["target_path"], size=config["img_size"])
     target_img = pad_image(target_img, config["padding"])
 
+    # Upload the skeleton of the retinotopic transform
+    skeleton = load_skeleton(path=config["skeleton_path"], size=100)
+
     # configure plot
     px = 1/plt.rcParams["figure.dpi"]  # pixel in inches
     fig = plt.figure(frameon=False)
@@ -39,6 +42,7 @@ if __name__ == "__main__":
 
     # initialize cell state
     cs = make_seed(config["img_size"], config["n_channels"])
+    cs[:, 4] = skeleton
     cs = pad_image(cs, config["padding"])
 
     # store frames for animation
@@ -47,6 +51,7 @@ if __name__ == "__main__":
     # run model
     for i in tqdm(range(config["iterations"])):
         cs = model(cs)
+        cs[0, 4] = skeleton
         frame = ax.imshow(rgba_to_rgb(cs[:, :4].detach().cpu())[0].permute(1, 2, 0), animated=True) 
         frames.append([frame])
 

@@ -120,7 +120,7 @@ def make_seed(size, n_channels=16):
         raise ValueError("n_channels must be greater than 4")
 
     x = torch.zeros((1, n_channels, size, size), dtype=torch.float32)
-    x[:, 4:, size // 2, size // 2] = 1.0 # Changed from 3: to 4: because my skeleton is in layer 4.
+    x[:, 3:, size // 2, size // 2] = 1.0
 
     return x
 

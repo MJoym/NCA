@@ -237,3 +237,44 @@ def Hinge(target, cs):
     loss = loss_batch.mean()
 
     return loss_batch, loss
+
+def setup_device(device=None):
+    """
+    Set up device for training. If no device is specified, use cuda if available,
+        otherwise use mps or cpu.
+
+    Args:
+        device (str): device to use for training (defaults to None)
+
+    Returns:
+        device (torch.device): device to use for training
+    """
+
+    if device is not None:
+        device = torch.device(device)
+    elif torch.cuda.is_available():
+        device = torch.device("cuda")
+    elif torch.backends.mps.is_available():
+        device = torch.device("mps")
+    else:
+        device = torch.device("cpu")
+
+    return device
+
+
+def plot_loss(losses):
+    """
+    Plot the loss.
+
+    Args:
+        losses (list): list of losses during training
+
+    Returns:
+        None
+    """
+
+    plt.plot(losses)
+    plt.title("Loss during training")
+    plt.xlabel("Iteration")
+    plt.ylabel("Loss")
+    plt.show()

@@ -9,7 +9,7 @@ Our goal was to determine if training the model on one or more images every iter
 ### References:
 This is a pytorch implementation of the model described in this [paper](https://distill.pub/2020/growing-ca/).
 
-This code is also based on the implementations of the following GutHub users:
+This code is also based on the implementations of the following GitHub users:
 
 [jankrepl](https://github.com/jankrepl/mildlyoverfitted/tree/master/github_adventures/automata)
 

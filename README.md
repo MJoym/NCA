@@ -2,8 +2,8 @@
 An unofficial implementation of the paper [Growing Neural Cellular Automata](https://distill.pub/2020/growing-ca/) in PyTorch.
 
 ## Additions and Changes to Model
-Our goal was to determine if training the model on one or more images every iteration would enable it to generate new images that it hadn't "seen" before.
-We used an additional layer from the input to add more information needed for the model to learn. This repository can help you learn how to add this additional information if needed.
+The goal was to determine if training the model on more than one image every iteration would enable it to generate new images that it hadn't "seen" before.
+I used one of the 12 empty layers from the input to add more information needed for the model to learn. This repository can help you understand how to add your additional information in the input layers if needed.
 
 To learn more about the code implementation see [erikhelmut](https://github.com/erikhelmut/neural-cellular-automata/tree/main?tab=readme-ov-file) repository.
 
